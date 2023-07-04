@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% block title %} AUTOMATICO {% endblock title %}
+
+{% block content %}
+
+<form class="range-field" method="POST">
+
+<div class="card bg-dark mx-auto text-left text-white col-md-4">
+    {{ form.hidden_tag() }}
+<div class="card-footer border-warning" id="divtierra">
+    <label for="tierra">Tierra</label>
+    <input type="checkbox" id="tierra" name="tierra" checked>
+</div>
+<div class="card-footer border-warning" id="divhidro">
+    <label for="hidro">Hidroponía</label>
+    <input type="checkbox" id="hidro" name="hidro">
+</div>
+<div class="card-footer border-warning">
+    <label for="horasluz">Horas de luz</label>
+    <input type="range" id="horasluz" name="horasluz" value="1" min="1" max="24" oninput="outputIDluz.value = horasluz.value">
+    <output name="salida" id="outputIDluz"></output>
+</div>
+<div class="card-footer border-warning">
+    <label for="hum_min">Humedad mínima</label>
+    <input type="range" id="hum_min" name="hum_min" value="50" min="1" max="100" oninput="outputIDhum_min.value = hum_min.value">
+    <output name="salida" id="outputIDhum_min"></output>
+</div>
+<div class="card-footer border-warning">
+    <label for="hum_max">Humedad máxima</label>
+    <input type="range" id="hum_max" name="hum_max" value="80" min="1" max="100" oninput="outputIDhum_max.value = hum_max.value">
+    <output name="salida" id="outputIDhum_max"></output>
+</div>
+<div class="card-footer border-warning">
+    <label for="temp_min">Temperatura mínima</label>
+    <input type="range" id="temp_min" name="temp_min" value="20" min="1" max="100" oninput="outputIDtemp_min.value = temp_min.value">
+    <output name="salida" id="outputIDtemp_min"></output>
+</div>
+<div class="card-footer border-warning">
+    <label for="temp_max">Temperatura máxima</label>
+    <input type="range" id="temp_max" name="temp_max" value="30" min="1" max="100" oninput="outputIDtemp_max.value = temp_max.value">
+    <output name="salida" id="outputIDtemp_max"></output>
+</div>
+<div class="card-footer border-warning">
+    <label for="ph_min">pH mínimo</label>
+    <input type="range" step="0.1" id="ph_min" name="ph_min" value="6.0" min="0.1" max="14" oninput="outputIDph_min.value = ph_min.value">
+    <output name="salida" id="outputIDph_min"></output>
+</div>
+<div class="card-footer border-warning">
+    <label for="ph_max">pH máximo</label>
+    <input type="range" step="0.1" id="ph_max" name="ph_max" value="7.0" min="0.1" max="14" oninput="outputIDph_max.value = ph_max.value">
+    <output name="salida" id="outputIDph_max"></output>
+</div>
+<div class="card-footer border-warning">
+    <label for="ec_min">EC mínimo</label>
+    <input type="range" step="0.1" id="ec_min" name="ec_min" value="0.5" min="0.1" max="1000" oninput="outputIDec_min.value = ec_min.value">
+    <output name="salida" id="outputIDec_min"></output>
+</div>
+<div class="card-footer border-warning">
+    <label for="ec_max">EC máximo</label>
+    <input type="range" step="0.1" id="ec_max" name="ec_max" value="1.5" min="0.1" max="1000" oninput="outputIDec_max.value = ec_max.value">
+    <output name="salida" id="outputIDec_max"></output>
+</div>
+<div class="card-footer border-warning" id="divsuelo1">
+    <label for="hum_suelo">Humedad del suelo</label>
+    <input type="checkbox" id="hum_suelo" name="hum_suelo">
+</div>
+<div class="card-footer border-warning" id="divriego1">
+    <label for="riego_por_tiempo">Riego por tiempo</label>
+    <input type="checkbox" id="riego_por_tiempo" name="riego_por_tiempo">
+</div>
+<div class="card-footer border-warning" id="divsuelo2">
+    <label for="humedad_suelo">Humedad del suelo</label>
+    <input type="range" id="humedad_suelo" name="humedad_suelo" value="50" min="0" max="100" oninput="outputIDhumedad_suelo.value = humedad_suelo.value">
+    <output name="salida" id="outputIDhumedad_suelo"></output>
+</div>
+<div class="card-footer border-warning" id="divriego2">
+    <label for="riego">Riego</label>
+    <input type="range" id="riego" name="riego" value="1" min="1" max="24" oninput="outputIDriego.value = riego.value">
+    <output name="salida" id="outputIDriego"></output>
+</div>
+<div class="card-footer border-warning" id="divriego3">
+    <label for="cant_riego">Cantidad de riego</label>
+    <input type="range" id="cant_riego" name="cant_riego" value="30" min="1" max="60" oninput="outputIDcant_riego.value = cant_riego.value">
+    <output name="salida" id="outputIDcant_riego"></output>
+</div>
+<div class="card-footer border-warning">
+    <label for="ventilador">Ventilador</label>
+    <input type="range" id="ventilador" name="ventilador" value="1" min="1" max="24" oninput="outputIDventilador.value = ventilador.value">
+    <output name="salida" id="outputIDventilador"></output>
+</div>
+<div class="card-footer border-warning">
+    <label for="cantidad_ventilador">Cantidad de ventiladores</label>
+    <input type="range" id="cantidad_ventilador" name="cantidad_ventilador" value="1" min="1" max="10" oninput="outputIDcantidad_ventilador.value = cantidad_ventilador.value">
+    <output name="salida" id="outputIDcantidad_ventilador"></output>
+</div>
+<div class="card-footer border-warning">
+    <label for="heater">Calentador</label>
+    <input type="range" id="heater" name="heater" value="1" min="1" max="24" oninput="outputIDheater.value = heater.value">
+    <output name="salida" id="outputIDheater"></output>
+</div>
+<div class="card-footer border-warning">
+    <label for="cantidad_calentador">Cantidad de calentadores</label>
+    <input type="range" id="cantidad_calentador" name="cantidad_calentador" value="1" min="1" max="10" oninput="outputIDcantidad_calentador.value = cantidad_calentador.value">
+    <output name="salida" id="outputIDcantidad_calentador"></output>
+</div>
+<div class="card-footer border-warning">
+    <label for="humidificador">Humidificador</label>
+    <input type="range" id="humidificador" name="humidificador" value="1" min="1" max="24" oninput="outputIDhumidificador.value = humidificador.value">
+    <output name="salida" id="outputIDhumidificador"></output>
+</div>
+<div class="card-footer border-warning">
+    <label for="cantidad_humidificador">Cantidad de humidificadores</label>
+    <input type="range" id="cantidad_humidificador" name="cantidad_humidificador" value="1" min="1" max="10" oninput="outputIDcantidad_humidificador.value = cantidad_humidificador.value">
+    <output name="salida" id="outputIDcantidad_humidificador"></output>
+</div>
+<div class="card-footer border-warning">
+    <label for="luces">Luces</label>
+    <input type="range" id="luces" name="luces" value="1" min="1" max="24" oninput="outputIDluces.value = luces.value">
+    <output name="salida" id="outputIDluces"></output>
+</div>
+<div class="card-footer border-warning">
+    <label for="cantidad_luces">Cantidad de luces</label>
+    <input type="range" id="cantidad_luces" name="cantidad_luces" value="1" min="1" max="10" oninput="outputIDcantidad_luces.value = cantidad_luces.value">
+    <output name="salida" id="outputIDcantidad_luces"></output>
+</div>
+<div class="card-footer border-warning">
+    <label for="ph_negativo">pH negativo</label>
+    <input type="range" step="0.1" id="ph_negativo" name="ph_negativo" value="6.0" min="0.1" max="14" oninput="outputIDph_negativo.value = ph_negativo.value">
+    <output name="salida" id="outputIDph_negativo"></output>
+</div>
+<div class="card-footer border-warning">
+    <label for="ph_positivo">pH positivo</label>
+    <input type="range" step="0.1" id="ph_positivo" name="ph_positivo" value="7.0" min="0.1" max="14" oninput="outputIDph_positivo.value = ph_positivo.value">
+    <output name="salida" id="outputIDph_positivo"></output>
+</div>
+<div class="card-footer border-warning">
+    <label for="ec_negativo">EC negativo</label>
+    <input type="range" step="0.1" id="ec_negativo" name="ec_negativo" value="0.5" min="0.1" max="1000" oninput="outputIDec_negativo.value = ec_negativo.value">
+    <output name="salida" id="outputIDec_negativo"></output>
+</div>
+<div class="card-footer border-warning">
+    <label for="ec_positivo">EC positivo</label>
+    <input type="range" step="0.1" id="ec_positivo" name="ec_positivo" value="1.5" min="0.1" max="1000" oninput="outputIDec_positivo.value = ec_positivo.value">
+    <output name="salida" id="outputIDec_positivo"></output>
+</div>
+<div class="card-footer border-warning">
+    <button type="submit" class="btn btn-primary">Enviar</button>
+</div>
+</div>
+</form>
+
+{% endblock content %}
+
+
+

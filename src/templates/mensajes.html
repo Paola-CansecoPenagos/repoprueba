@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %} Mensaje al Administrador {% endblock title %}
+
+{% block content %}
+
+<form class="range-field" method="POST">
+<div class="card bg-dark mx-auto text-left text-white col-md-8">
+Fecha: 2023-06-25 - Hora: 10:30 AM<br>
+Número de serie: 1234567890<br>
+Usuario: JohnDoe<br>
+</div>
+<div class="card bg-dark mx-auto text-left text-white col-md-8">
+    {{ form.hidden_tag() }}
+<div class="card-text border-warning">
+    {{ form.asunto.label() }}
+    {{ form.asunto(class="col-md-8 mb-10") }}
+    {% if form.asunto.errors %}
+    {% for error in form.asunto.errors %}
+
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+          <button type="button" class="fade close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+
+            {{ error }}
+        </div>
+
+
+    {% endfor %}
+    {% endif %}
+<div class="card-text border-warning">
+    {{ form.mensaje.label() }}
+    {{ form.mensaje(class="col-md-8 mb-10", cols="35",rows="20") }}
+    {% if form.mensaje.errors %}
+    {% for error in form.mensaje.errors %}
+
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+          <button type="button" class="fade close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+
+            {{ error }}
+        </div>
+
+
+    {% endfor %}
+    {% endif %}
+<div class="card-footer border-warning">
+    {{ form.submit(class="btn btn-success mb-2 t-2") }}
+</div>
+</div>
+</div>
+</div>
+</form>
+{% for msj in listado %}
+{% if msj.respuesta == None %}
+<div class="jumbotronchat text-white" style="background-color:rgba(68, 33, 77, 0.7); border:3px solid Grey;">
+  <p style="background-color:rgba(68, 33, 77, 0.5);">Tu mensaje es el siguiente {{ msj.usuario }}:
+      <br>
+  Asunto: Solicitud de información<br>
+  Mensaje: Hola, me gustaría obtener más información sobre el sistema de riego automático.
+  </p>
+  <hr class="my-10">
+
+  <p class="lead" style="background-color:rgba(201, 24, 48, 1);">Sin respuesta:
+      <br>
+
+   </p>
+    <span style="background-color:rgba(68, 33, 77, 0.5);">Fecha: 2023-06-24 - Hora: 09:45 AM</span>
+</div>
+  <hr class="my-10">
+    {% else %}
+<div class="jumbotronchat text-white" style="background-color:rgba(68, 33, 77, 0.7); border:3px solid Grey;">
+  <p style="background-color:rgba(68, 33, 77, 0.5);">Tu mensaje es el siguiente {{ msj.usuario }}:
+      <br>
+  Asunto: Solicitud de información<br>
+  Mensaje: Hola, me gustaría obtener más información sobre el sistema de riego automático.
+  </p>
+  <hr class="my-10">
+
+  <p class="lead" style="background-color:rgba(0, 173, 38, 0.5);">La respuesta del Administrador:
+      <br>
+    Gracias por tu interés en nuestro sistema de riego automático. Te enviaremos la información detallada por correo electrónico.
+   </p>
+    <span style="background-color:rgba(68, 33, 77, 0.5);">Fecha: 2023-06-24 - Hora: 10:15 AM</span>
+</div>
+  <hr class="my-10">
+    {% endif %}
+{% endfor %}
+
+
+{% endblock content %}

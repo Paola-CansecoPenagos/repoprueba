@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block title %} Luna {% endblock title %}
+
+{% block content %}
+
+<script type="text/javascript">
+
+function load_moon_phases(obj){
+    var gets=[]
+    for (var i in obj){
+        gets.push(i+"="+encodeURIComponent(obj[i]))
+    }
+    var xmlhttp = new XMLHttpRequest()
+    var url = "http://www.icalendar37.net/lunar/api/?"+gets.join("&")
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            var moon  = JSON.parse(xmlhttp.responseText)
+            example_1(moon)
+            example_2(moon)
+            example_3(moon)
+        }
+    }
+    xmlhttp.open("GET", url, true)
+    xmlhttp.send()
+}
+document.addEventListener("DOMContentLoaded", function() {
+    var configMoon = {
+        lang        :'es', // 'ca' 'de' 'en' 'es' 'fr' 'it' 'pl' 'pt' 'ru' 'zh' (*)
+        month       :6, // 1  - 12
+        year        :2023,
+        size        :50, //pixels
+        lightColor  :"#FFFF88", //CSS color
+        shadeColor  :"#111111", //CSS color
+        sizeQuarter :20, //pixels
+        texturize   :false //true - false
+    }
+    configMoon.LDZ=new Date(configMoon.year,configMoon.month-1,1)/1000
+    load_moon_phases(configMoon)
+})
+
+</script>
+
+
+<div class="luna text" style="color:#ed3f28;">
+
+  <div class="container">
+
+    <p class="display-4">Fecha: 26/6/2023</p>
+    <p class="display-4">Hemisferio Norte:</p>
+      <div id="ex1"></div>
+          <script type="text/javascript">
+            function example_1(moon){
+                var day = 26
+                var dayWeek=moon.phase[day].dayWeek
+                var html="<div class='moon'>"
+                html+="<div>"+moon.nameDay[dayWeek]+"</div>"
+                html+="<div>"+ day + " " + moon.monthName + " "+moon.year+"</div>"
+                html+=moon.phase[day].svg
+                html+="<div>"+moon.phase[day].phaseName + " "+ Math.round(moon.phase[day].lighting)+"%</div>"
+                html+="</div>"
+                document.getElementById("ex1").innerHTML=html
+            }
+          </script>
+<!--
+    <p class="lead">La luna se encuentra dentro la fase de {{ luna_hoy.fase }}</p>
+    <p class="lead">Que culmina el dia: {{ luna_hoy.fecha }}</p>
+    {% if luna_hoy.fase=='Luna Nueva' %}
+      <img src="data:;base64,{{ nueva }}"/>
+      <p>{{ luna_hoy.recomendacion }}</p>
+     {% endif %}
+     {% if luna_hoy.fase=='Luna Llena' %}
+      <img src="data:;base64,{{ llena }}"/>
+      <p>{{ luna_hoy.recomendacion }}</p>
+     {% endif %}
+     {% if luna_hoy.fase=='Cuarto Menguante' %}
+      <img src="data:;base64,{{ menguante }}"/>
+      <p>{{ luna_hoy.recomendacion }}</p>
+     {% endif %}
+      {% if luna_hoy.fase=='Cuarto Creciente' %}
+      <img src="data:;base64,{{ creciente }}"/>
+      <p>{{ luna_hoy.recomendacion }}</p>
+     {% endif %}
+      <p class="lead">--------------------------------------------</p>
+
+
+  </div>
+
+
+
+
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+-->
+    <p class="display-4">Hemisferio Sur:</p>
+    <p class="lead">En la ciudad de Buenos Aires</p>
+    <p class="lead">Los datos semanales de la luna son: </p>
+
+    <p class="lead">Fecha: 26/6/2023</p>
+    <p class="lead">Fase: Cuarto Creciente</p>
+    <p class="lead">Hemisferio: Sur</p>
+    <p class="lead">Hora de salida: 20:45</p>
+    <p class="lead">Hora de puesta: 09:36</p>
+    <p class="lead">Visibilidad(luminosidad): 38%</p>
+    <p class="lead">Estado: Visible</p>
+    <img src="data:;base64,dia4"/>
+    <p>Recomendación: Realizar actividades al aire libre.</p>
+
+    <p class="lead">--------------------------------------------</p>
+
+</div>
+<video id="video" autoplay muted loop>
+    <source src="{{ url_for('static', filename='luna.mp4') }}" type="video/mp4">
+  </video>
+</div>
+{% endblock content %}
+
+
+

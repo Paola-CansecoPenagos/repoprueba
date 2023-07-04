@@ -1,0 +1,277 @@
+{% extends 'base.html' %}
+{% block title %} Home {% endblock title %}
+
+{% block info %}
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="background-color:#4cc979">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Nombre de la configuracion: Configuración estática</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div style="background-color:#859e85" class="modal-body">
+          <p style="background-color:#44cf44">Inicio de actividad:</p>
+          2023-06-26<br>
+          <p style="background-color:#44cf44">Tipo de cultivo: Tomate</p>
+          <p style="background-color:#44cf44">Horas de Luz: 12hs.</p>
+          <p style="background-color:#44cf44">% hum suelo: 50%</p>
+          <p style="background-color:#44cf44">Regar c/ 6hs.</p>
+          <p style="background-color:#44cf44">Cant seg riego: 30seg.</p>
+          <p style="background-color:#44cf44">% min humedad: 40%</p>
+          <p style="background-color:#44cf44">% max humedad: 70%</p>
+          <p style="background-color:#44cf44">Temp min: 20°</p>
+          <p style="background-color:#44cf44">Temp max: 30°</p>
+          <p style="background-color:#44cf44">PH min: 5</p>
+          <p style="background-color:#44cf44">PH max: 7</p>
+          <p style="background-color:#44cf44">TDS min: 800 ppm</p>
+          <p style="background-color:#44cf44">TDS max: 1200 ppm</p>
+          <p style="background-color:#44cf44">Ventilar c/ 3hs.</p>
+          <p style="background-color:#44cf44">Tiempo vent: 10min.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button id="conf_name" type="button" class="btn btn-sm btn-outline-secondary mr-auto mt-2" data-toggle="modal" data-target="#exampleModalCenter">
+  {% if TRABAJANDO == True %}
+    Configuracion actual: Configuración estática
+  {% else %}
+    Ultima configuracion: Configuración estática
+  {% endif %}
+</button>
+{% endblock info %}
+{% block sensor %}
+
+
+
+<form name="sensorform" action="{{ url_for('core.sensor') }}">
+{% if TRABAJANDO == True and session['tipo_cultivo'] == 'tierra' %}
+<img src="{{ url_for('static', filename='pala.png') }}">
+<small class="text-light">Hum.Suelo: {{"%.2f"|format(suelo)}}%</small>
+{% endif %}
+{% if TRABAJANDO == True and session['tipo_cultivo'] == 'hidroponico' %}
+<img src="{{ url_for('static', filename='termometro-agua.png') }}">
+<small class="text-light">Temp.Agua: 25°</small>
+{% endif %}
+{% if TRABAJANDO == True %}
+<img src="{{ url_for('static', filename='ph.png') }}">
+<small class="text-light">PH: {{"%.2f"|format(ph)}}</small>
+<img src="{{ url_for('static', filename='agua.png') }}">
+<small class="text-light">TDS: {{"%.2f"|format(ec)}}ppm</small>
+<img src="{{ url_for('static', filename='hum.png') }}">
+<small class="text-light">Hum: {{humedad}}%</small>
+<img src="{{ url_for('static', filename='temp.png') }}">
+<small class="text-light">Temp: {{temperatura}}°</small>
+<button type="submit" id="boton" class="btn btn-outline-light">Consultar</button>
+{% endif %}
+</form>
+
+{% endblock sensor%}
+
+    {% block trabajando %}
+
+<form method="POST">
+
+{{ form.hidden_tag() }}
+{% if TRABAJANDO == False %}
+{{ form.on2(class="btn btn-danger btn-circle") }}
+  <small class="text-light">INDOOR APAGADO</small>
+    {% else %}
+  {{ form.off2(class="btn btn-success btn-circle") }}
+  <small class="text-light">INDOOR ENCENDIDO</small>
+    {% endif %}
+    {% endblock trabajando %}
+
+</form>
+
+{% block content %}
+
+<div>
+
+<div class="card-deck">
+{% if current_user.is_authenticated and session['username'] == config.ADMIN %}
+  <div class="card">
+    <img src="{{ url_for('static', filename='ssh1.jpg') }}" class="card-img-top rounded-circle" alt="..." >
+    <div class="card-body" style="background-color: #44cf44">
+      <h5 class="card-title">Ejecutar comando remoto</h5>
+      <p class="card-text">Ejecutar un comando en un servidor remoto</p>
+    </div>
+    <div class="card-footer" style="background-color: rgba(0, 179, 65, 0.7)">
+      <small class="text-muted">ej: $ls -la</small>
+    </div>
+   <a href="{{ url_for('core.comando') }}" class="botonesON">Ejecutar comando</a>
+
+  </div>
+
+  <div class="card">
+    <img src="{{ url_for('static', filename='subir.png') }}" class="card-img-top" alt="...">
+    <div class="card-body" style="background-color: #44cf44">
+      <h5 class="card-title">Subir Archivo</h5>
+      <p class="card-text">Subir algun archivo al servidor remoto</p>
+    </div>
+    <div class="card-footer" style="background-color: rgba(0, 179, 65, 0.7)">
+      <small class="text-muted">upload</small>
+    </div>
+      <a href="{{ url_for('core.upload') }}" class="botonesON">Subir script</a>
+  </div>
+{% endif %}
+  <div class="card">
+    <img src="{{ url_for('static', filename='rapido.png') }}" class="card-img-top" alt="...">
+    <div class="card-body" style="background-color: #44cf44">
+      <h5 class="card-title" style="background-color: #859e85">Controles Rapidos</h5>
+      <p class="card-text">Luz, Ventilador, Intractor, Extractor, Humedificador y Bombas de Ph y Riego</p>
+    </div>
+    <div class="card-footer" style="background-color: rgba(0, 179, 65, 0.7)">
+      <small class="text-muted">Corrobora el funcionamiento de reles</small>
+    </div>
+      <a href="{{ url_for('core.indoor') }}" class="botonesON">Entrar</a>
+  </div>
+
+  <div class="card">
+    <img src="{{ url_for('static', filename='programar.png') }}" class="card-img-top" alt="...">
+    <div class="card-body" style="background-color: #44cf44">
+      <h5 class="card-title" style="background-color: #859e85">Automatizar</h5>
+      <p class="card-text">Climatizar luz, temperatura, humedad y ventilacion. Controlar riego y humedad del suelo. Y Nivelar el PH y EC </p>
+    </div>
+    <div class="card-footer" style="background-color: rgba(0, 179, 65, 0.7)">
+      <small class="text-muted">Automatiza, sensoriza y sicroniza indoor con la base de datos</small>
+    </div>
+      <a href="{{ url_for('core.automatico') }}" class="botonesON">Nueva</a>
+      <a href="{{ url_for('core.cargar') }}" class="botonesON">Cargar</a>
+  </div>
+    <div class="card">
+    <img src="{{ url_for('static', filename='luna.png') }}" class="card-img-top" alt="...">
+    <div class="card-body" style="background-color: #44cf44">
+      <h5 class="card-title" style="background-color: #859e85">Fases Lunares</h5>
+      <p class="card-text">Muestra la fase solar en la que nos encontramos, ademas de una suerte de tips para cada fase</p>
+    </div>
+    <div class="card-footer" style="background-color: rgba(0, 179, 65, 0.7)">
+      <small class="text-muted">Fecha, ubicacion y porcentaje de fase lunar</small>
+    </div>
+      <a href="{{ url_for('core.luna') }}" class="botonesON">Entrar</a>
+  </div>
+
+  <div class="card">
+    <img src="{{ url_for('static', filename='servicio-tecnico.png') }}" class="card-img-top" alt="...">
+    <div class="card-body" style="background-color: #44cf44">
+      <h5 class="card-title" style="background-color: #859e85">Servicio Tecnico</h5>
+      <p class="card-text">Envia mensaje al servicio tecnico para su atencion remota, calibracion de sensores y dudas acerca del funcionamiento</p>
+    </div>
+    <div class="card-footer" style="background-color: rgba(0, 179, 65, 0.7)">
+      <small class="text-muted">Reparar y calibrar el Florabot de forma asistida remota</small>
+    </div>
+      <a href="{{ url_for('core.mensajeadm') }}" class="botonesON">Entrar</a>
+  </div>
+  <div class="card">
+    <img src="{{ url_for('static', filename='contrasena.png') }}" class="card-img-top" alt="...">
+    <div class="card-body" style="background-color: #44cf44">
+      <h5 class="card-title" style="background-color: #859e85">Cambiar Password</h5>
+      <p class="card-text">Cambiar el password del usuario actual</p>
+    </div>
+    <div class="card-footer" style="background-color: rgba(0, 179, 65, 0.7)">
+      <small class="text-muted">passwd*** </small>
+    </div>
+      <a href="{{ url_for('users.cambiarpass', username=session['username']) }}" class="botonesON">Cambiar</a>
+  </div>
+
+  <div class="card">
+    <img src="{{ url_for('static', filename='logs.png') }}" class="card-img-top" alt="...">
+    <div class="card-body" style="background-color: #44cf44">
+      <h5 class="card-title" style="background-color: #859e85">Logs</h5>
+      <p class="card-text">Muestra la fecha, hora y nombre de configuracion ejecutada por el usuario</p>
+    </div>
+    <div class="card-footer" style="background-color: rgba(0, 179, 65, 0.7)">
+      <small class="text-muted">Logs del sistema</small>
+    </div>
+      <a href="{{ url_for('users.historial', username=session['username']) }}" class="botonesON">Logs</a>
+  </div>
+  <div class="card">
+    <img src="{{ url_for('static', filename='streaming.png') }}" class="card-img-top" alt="...">
+    <div class="card-body" style="background-color: #44cf44">
+      <h5 class="card-title" style="background-color: #859e85">Encender camara</h5>
+      <p class="card-text">Enciende la camara de control Florabot para tener un streaming en tiempo real del cultivo</p>
+    </div>
+    <div class="card-footer" style="background-color: rgba(0, 179, 65, 0.7)">
+      <small class="text-muted">WebStreaming</small>
+    </div>
+            {% if current_user.is_authenticated and session['camara'] != True %}
+          <a href="{{ url_for('core.camara', cam=True) }}" class="botonesON">ON</a>
+            {% endif %}
+            {% if current_user.is_authenticated and session['camara'] == True %}
+          <a href="{{ url_for('core.camara', cam=False) }}" class="botonesOFF">OFF</a>
+          <a href="http://sistemadomotica.dvrdns.org:8081" class="botonesON" target="_blank">Ver camara</a>
+            {% endif %}
+  </div>
+  {% if current_user.is_authenticated and session['trabajando'] == True %}
+
+  <div class="card">
+    <img src="{{ url_for('static', filename='ecosystem.png') }}" class="card-img-top" alt="...">
+    <div class="card-body" style="background-color: #44cf44">
+      <h5 class="card-title" style="background-color: #859e85">Ecosystem</h5>
+      <p class="card-text">Se ahorra luz artificial y se aprobecha la luz natural. El sensor de luminosidad detectara si la luz natural es suficiente como para apagar la luz artificial</p>
+    </div>
+    <div class="card-footer" style="background-color: rgba(0, 179, 65, 0.7)">
+      <small class="text-muted">Funciona solo para invernaculos al exterior</small>
+    </div>
+            {% if current_user.is_authenticated and session['ecosystem'] != True and session['trabajando'] == True %}
+          <a href="{{ url_for('core.ecosystem', eco=True) }}" class="botonesON">Ecosystem ON</a>
+            {% endif %}
+            {% if current_user.is_authenticated and session['ecosystem'] == True and session['trabajando'] == True %}
+          <a href="{{ url_for('core.ecosystem', eco=False) }}" class="botonesOFF">Ecosystem OFF</a>
+            {% endif %}
+
+  </div>
+
+  <div class="card">
+    <img src="{{ url_for('static', filename='camara.png') }}" class="card-img-top" alt="...">
+    <div class="card-body" style="background-color: #44cf44">
+      <h5 class="card-title" style="background-color: #859e85">Timelaps</h5>
+      <p class="card-text">Toma cuatro fotografias en el periodo de luz encendida durante todo el cultivo y despues las podes descargar en un archivo comprimido</p>
+    </div>
+    <div class="card-footer" style="background-color: rgba(0, 179, 65, 0.7)">
+      <small class="text-muted">Con estas fotos se puede hacer un timelaps</small>
+    </div>
+           <a href="{{ url_for('core.timelaps') }}" class="botonesON">Timelaps</a>
+  </div>
+            {% endif %}
+
+
+
+</div>
+
+
+<form method="POST">
+<div>
+  <br>
+
+    {{ form.hidden_tag() }}
+
+    {% if TRABAJANDO == False %}
+
+    {{ form.on(class="btn btn-outline-dark btn-lg btn-block") }}<br><br>
+
+    {% else %}
+
+    {{ form.off(class="btn btn-outline-danger btn-lg btn-block") }}<br><br>
+
+    {% endif %}
+
+
+</div>
+
+</form>
+
+
+
+
+</div>
+
+{% endblock content %}
+
+

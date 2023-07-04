@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %} Lista de Configuraciones {% endblock title %}
+
+{% block content %}
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h2>Lista de Setups</h2>
+    <p class="lead">Seleccione la configuración que desea abrir</p>
+  </div>
+
+{% for nc in nconf %}
+<div class="list-group">
+  <a href="#" class="list-group-item list-group-item-action">
+      <h5 class="mb-1">{{ nc.nombre_conf }}</h5>
+    <div class="d-flex w-100 justify-content-between">
+      <small><br>
+      Ultima ejecución: 2023-06-25<br>
+      Tipo de Cultivo: Tomates<br>
+      Horas de encendido de la LUZ: 12<br>
+      Porcentaje de humedad del suelo: 60%<br>
+      Cada cuántas horas regar: 4<br>
+      Cantidad de segundos de riego: 10<br>
+      Porcentaje mínimo de humedad: 40%<br>
+      Porcentaje máximo de humedad: 80%<br>
+      Temperatura mínima: 20°C<br>
+      Temperatura máxima: 30°C<br>
+      Nivel de pH mínimo: 6.0<br>
+      Nivel de pH máximo: 7.0<br>
+      TDS mínimo: 500 ppm<br>
+      TDS máximo: 1500 ppm<br>
+      Cada cuántas horas ventilar: 2<br>
+      Cantidad de minutos de ventilación: 5
+      </small>
+
+    </div>
+
+    <p class="mb-1">Haga clic en la configuración para cargar e iniciar</p>
+    <small>Haga clic en el botón 'BORRAR' para borrar</small>
+  </a>
+
+</div>
+
+
+
+<div>
+    <button type="button" class="btn btn-danger btn-lg btn-block" disabled>Borrar</button>
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+{% endblock content %}
+
+
+
+
+
+
+
